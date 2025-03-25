@@ -1,0 +1,44 @@
+domains
+    number = integer  
+    digit = integer    
+
+predicates
+    append_prepend(number, digit, number)  % Главный предикат: N, K -> Result
+    count_digits(number, number)           % Подсчёт количества цифр в числе
+    power_of_10(number, number)            % Вычисление 10^P
+    main                                    % Точка входа
+
+clauses
+    % Подсчёт цифр в числе (рекурсивно)
+    count_digits(N, 1) :- N >= 0, N < 10, !.  % Базовый случай для 0-9
+    count_digits(N, C) :-
+        N >= 10,
+        N1 = N div 10,                     % Убираем последнюю цифру
+        count_digits(N1, C1),              % Рекурсивный вызов
+        C = C1 + 1.                        % Увеличиваем счётчик
+
+    % Вычисление 10 в степени P (рекурсивно)
+    power_of_10(0, 1) :- !.                % Базовый случай: 10^0 = 1
+    power_of_10(P, R) :-
+        P > 0,                             % Для P > 0
+        P1 = P - 1,
+        power_of_10(P1, R1),               % Рекурсивный вызов
+        R = R1 * 10.                       % Умножаем результат на 10
+
+    % Основная логика: добавление цифры в начало и конец
+    append_prepend(N, K, Result) :-
+        K >= 0, K <= 9,                    % Проверка, что K - цифра
+        count_digits(N, Digits),           % Получаем кол-во цифр в N
+        power_of_10(Digits, Pow),          % Вычисляем 10^Digits
+        Prepended = K * Pow + N,           % Добавляем K в начало
+        Result = Prepended * 10 + K.       % Добавляем K в конец
+
+    % Основная процедура
+    main :-
+        write("Введите число N: "), readint(N),         % Ввод числа
+        write("Введите цифру K: "), readint(K),         % Ввод цифры
+        append_prepend(N, K, Result),                   % Вычисление
+        write("Результат: ", Result).                   % Вывод результата
+
+goal
+    main, nl.  % Запуск программы
