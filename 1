@@ -35,10 +35,10 @@ clauses
 
     % Основная процедура
     main :-
-        write("Введите число N: "), readint(N),         % Ввод числа
-        write("Введите цифру K: "), readint(K),         % Ввод цифры
-        append_prepend(N, K, Result),                   % Вычисление
-        write("Результат: ", Result).                   % Вывод результата
+        write("Введите число N: "), readint(N),         
+        write("Введите цифру K: "), readint(K),         
+        append_prepend(N, K, Result),                   
+        write("Результат: ", Result).                   
 
 goal
     main, nl.  % Запуск программы
